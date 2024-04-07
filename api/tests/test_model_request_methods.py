@@ -1,7 +1,6 @@
 """Тесты для основных HTTP-методов при работе с моделями"""
 from django.test import TestCase
 from rest_framework import status
-from rest_framework.test import APIClient
 
 from api.models import *
 
@@ -14,13 +13,10 @@ class ModelRequestMethodsTestCase(TestCase):
             exercise=cls.exercise,
             value='100/3*20',
         )
-        cls.training_day = (TrainingDay.objects.create()
-                            .training_exercises.add(cls.training_exercise))
-        cls.training_program = (
-            TrainingProgram.objects.create(name='program 1')
-            .training_days.add(cls.training_day)
-        )
-        cls.client = APIClient()
+        cls.training_day = TrainingDay.objects.create()
+        cls.training_day.training_exercises.add(cls.training_exercise)
+        cls.training_program = TrainingProgram.objects.create(name='program 1')
+        cls.training_program.training_days.add(cls.training_day)
 
     def test_post(self):
         response_exercise = self.client.post(

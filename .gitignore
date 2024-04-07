@@ -3,3 +3,5 @@ venv/
 .idea
 frontend/build/
 frontend/node_modules/
+.coverage
+htmlcov/

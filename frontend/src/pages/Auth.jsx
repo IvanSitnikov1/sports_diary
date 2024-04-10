@@ -10,7 +10,7 @@ import {login} from '../store/user/userSlice';
 export const Auth = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
-    const [isLogin, setIsLogin] = useState(false)
+    const [isLogin, setIsLogin] = useState(true)
     const dispatch = useDispatch()
     const navigate = useNavigate()
 

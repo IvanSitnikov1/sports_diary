@@ -17,6 +17,6 @@ router.register('users', UserModelViewSet, basename='users')
 urlpatterns = [
     path('', include(router.urls)),
     path('drf-auth/', include('rest_framework.urls')),
-    path('token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
-    path('refresh/', TokenRefreshView.as_view(), name='token_refresh'),
+    path('auth/token/', TokenObtainPairView.as_view(), name='token_obtain_pair'),
+    path('auth/refresh/', TokenRefreshView.as_view(), name='token_refresh'),
 ]

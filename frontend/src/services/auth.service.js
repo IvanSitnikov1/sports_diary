@@ -5,6 +5,11 @@ export const AuthService = {
         const {data} = await instance.post('users/', userData)
         return data
     },
-    async login() {},
-    async getMe() {},
+    async login(userData) {
+        const {data} = await instance.post('auth/token/', userData)
+        return data
+    },
+    async getProfile() {
+        const {data} = await instance.get('auth/profile/')
+    },
 }

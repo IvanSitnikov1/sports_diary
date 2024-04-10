@@ -1,18 +1,36 @@
 import {useState} from 'react';
+import { useDispatch } from 'react-redux';
+import {useNavigate} from 'react-router-dom';
 import {Form, Button, Container} from 'react-bootstrap';
 
 import {AuthService} from '../services/auth.service';
+import {setTokenToLocalStorage} from '../helpers/localstorage.helper';
+import {login} from '../store/user/userSlice';
 
 export const Auth = () => {
     const [email, setEmail] = useState('')
     const [password, setPassword] = useState('')
     const [isLogin, setIsLogin] = useState(false)
+    const dispatch = useDispatch()
+    const navigate = useNavigate()
 
     const loginHandler = async (e) => {
         try {
-
+            e.preventDefault()
+            const data = await AuthService.login({
+                username: email,
+                password: password,
+            })
+            if (data) {
+                setTokenToLocalStorage('token', data.access)
+                dispatch(login({
+                    username: email,
+                    password: password,
+                 }))
+                navigate('/')
+            }
         } catch (err) {
-            const error = err.response?.data.message
+            console.log(err.response?.data)
         }
     }
 

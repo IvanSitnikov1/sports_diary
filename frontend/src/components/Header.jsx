@@ -41,11 +41,7 @@ export const Header = () => {
                             <Nav.Link href="/about">О нас</Nav.Link>
                             <Nav.Link href="/contacts">Контакты</Nav.Link>
                         </Nav>
-                        {isAuth ? (
-                            <Button variant="outline-warning" onClick={logoutHandler}>Logout</Button>
-                        ) : (
-                           <Nav.Link href="/auth">Log In / Sing In</Nav.Link>
-                        )}
+                        <Nav.Link href="/auth" onClick={logoutHandler}>Log out</Nav.Link>
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

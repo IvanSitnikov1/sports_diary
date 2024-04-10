@@ -1,13 +1,8 @@
 import {Navbar, Nav, Form, Container, Button, Row, Col} from 'react-bootstrap';
 import logo from '../logo192.png';
 import { Outlet } from "react-router-dom";
-import { useSelector } from 'react-redux';
-import {selectIsAuth} from '../store/selectors';
-
 
 export const Header = () => {
-    const isAuth = useSelector(selectIsAuth)
-    console.log(isAuth)
 
     return (
         <>

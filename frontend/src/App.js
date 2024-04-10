@@ -17,7 +17,8 @@ import {AboutPage} from './pages/AboutPage';
 import {ContactPage} from './pages/ContactPage';
 import {Auth} from './pages/Auth';
 import {login, logout} from './store/user/userSlice';
-import {getTokenFromLocalStorage} from './helpers/localstorage';
+import {getTokenFromLocalStorage} from './helpers/localstorage.helper';
+import {AuthService} from './services/auth.service';
 
 function App() {
     const dispatch = useDispatch()
@@ -52,6 +53,11 @@ function App() {
             console.log(err.response?.data)
         }
     }
+
+    useEffect(() => {
+        checkAuth()
+    }, [])
+
   return (
     <>
       <RouterProvider router={router} />

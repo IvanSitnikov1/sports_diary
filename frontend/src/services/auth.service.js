@@ -11,5 +11,6 @@ export const AuthService = {
     },
     async getProfile() {
         const {data} = await instance.get('auth/profile/')
+        return data
     },
 }

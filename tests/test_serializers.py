@@ -1,3 +1,4 @@
+"""Тесты для сериализаторов"""
 from django.test import TestCase
 
 from api.serializers import *

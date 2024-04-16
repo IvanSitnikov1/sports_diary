@@ -5,6 +5,7 @@ class Exercise(models.Model):
     """Модель упражнения"""
     name = models.CharField(max_length=50)
     photo = models.ImageField(upload_to='photo_exercises/%Y/%m/%d/', default='/photo_exercises/barbell-deadlifts.png')
+    photo_url = models.URLField(blank=True, null=True)
     description = models.TextField()
 
     def __str__(self):

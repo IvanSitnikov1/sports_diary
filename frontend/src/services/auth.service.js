@@ -1,4 +1,4 @@
-import {instance} from '../api/axios.api'
+import {instance} from '../api/axios.api';
 
 export const AuthService = {
     async registration(userData) {

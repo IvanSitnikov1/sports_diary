@@ -1,10 +1,21 @@
 import React, { useEffect, useState } from 'react';
-import axios from 'axios';
 import {Button} from 'react-bootstrap';
 
 import {Exercise} from '../components/Exercise';
+import {instance} from '../api/axios.api';
 
 export const ExercisePage = () => {
+    const [exercises, setExercises] = useState([])
+
+    useEffect(() => {
+        instance.get('exercise/').then((resp) => {
+            setExercises(resp.data);
+        })
+        .catch((err) => {
+            console.log(err.response?.data)
+        });
+    }, [])
+
 
     return (
         <>
@@ -12,7 +23,9 @@ export const ExercisePage = () => {
                 <h3 className="col-4">Упражнения</h3>
                 <Button variant="warning">Добавить</Button>
             </div>
-            <Exercise/>
+            {exercises.map((exercise) => (
+                <Exercise exercise={exercise} />
+            ))}
         </>
     )
 }

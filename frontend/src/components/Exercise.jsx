@@ -1,4 +1,4 @@
-import logo from '../logo192.png';
+
 
 export const Exercise = (exercise) => {
     return (
@@ -7,7 +7,6 @@ export const Exercise = (exercise) => {
             <div className="bg-light d-flex mt-3" style={{minWidth: "500px"}}>
                 <img
                     src={exercise.exercise.photo}
-                    height="130"
                     width="130"
                     alt="Logo"
                     className="m-2"

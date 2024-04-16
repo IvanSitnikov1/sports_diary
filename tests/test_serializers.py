@@ -22,7 +22,8 @@ class SerializersTestCase(TestCase):
         expected_data = {
             'id': self.exercise.id,
             'name': 'deadlift',
-            'photo': None,
+            'photo': '/media/photo_exercises/barbell-deadlifts.png',
+            'photo_url': None,
             'description': '',
         }
         self.assertEqual(data, expected_data)

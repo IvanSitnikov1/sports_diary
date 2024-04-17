@@ -1,4 +1,4 @@
-import {Button} from 'react-bootstrap';
+import {Button, Card} from 'react-bootstrap';
 import React, { useEffect, useState } from 'react';
 
 import {instance} from '../api/axios.api';
@@ -19,8 +19,8 @@ export const Exercise = ({exercise, changeExercise}) => {
     }
 
     return (
-        <>
-            <div className="d-flex align-items-center justify-content-between">
+        <Card className="m-3" style={{minWidth: "500px", backgroundColor: "#afd3a9a6"}}>
+            <div className="d-flex align-items-center justify-content-between me-3">
                 <h4 className="m-3">{name}</h4>
                 <div className="d-flex align-items-center">
                     <Button variant="outline-success" className="m-2" onClick={handleShow}>
@@ -31,15 +31,11 @@ export const Exercise = ({exercise, changeExercise}) => {
                     </Button>
                 </div>
             </div>
-            <div
-                className="d-flex mt-3"
-                style={{minWidth: "500px", backgroundColor: "#afd3a9a6"}}
-            >
+            <div className="d-flex">
                 <img
                     src={imageUrl}
-                    width="130"
                     alt="Logo"
-                    className="m-2"
+                    className="m-2 col-2"
                 />
                 <p className="m-2 overflow-hidden">{description}</p>
             </div>
@@ -49,6 +45,6 @@ export const Exercise = ({exercise, changeExercise}) => {
                 changeExercise={changeExercise}
                 exercise={exercise}
             />
-        </>
+        </Card>
     )
 }

@@ -4,7 +4,10 @@ from django.db import models
 class Exercise(models.Model):
     """Модель упражнения"""
     name = models.CharField(max_length=50)
-    photo = models.ImageField(upload_to='photo_exercises/%Y/%m/%d/', default='/photo_exercises/barbell-deadlifts.png')
+    photo = models.ImageField(
+        upload_to='photo_exercises/%Y/%m/%d/',
+        default='/photo_exercises/6307b43b03b7b844244730.jpg'
+    )
     photo_url = models.URLField(blank=True, null=True)
     description = models.TextField()
 

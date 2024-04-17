@@ -11,14 +11,17 @@ export const ExercisePage = () => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-
-    useEffect(() => {
+    const getExercises = () => {
         instance.get('exercise/').then((resp) => {
             setExercises(resp.data);
         })
         .catch((err) => {
             console.log(err.response?.data)
         });
+    };
+
+    useEffect(() => {
+        getExercises();
     }, [])
 
     return (
@@ -28,9 +31,9 @@ export const ExercisePage = () => {
                 <Button variant="warning" onClick={handleShow}>Добавить</Button>
             </div>
             {exercises.map((exercise) => (
-                <Exercise exercise={exercise} />
+                <Exercise exercise={exercise} changeExercise={getExercises} />
             ))}
-            <CreateExercise show={show} handleClose={handleClose} />
+            <CreateExercise show={show} handleClose={handleClose} changeExercise={getExercises} />
         </>
     )
 }

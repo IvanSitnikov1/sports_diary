@@ -3,19 +3,19 @@ import {Modal, Form, Button} from 'react-bootstrap';
 
 import {instance} from '../api/axios.api';
 
-export const CreateExercise = ({show, handleClose}) => {
+export const CreateExercise = ({show, handleClose, changeExercise}) => {
     const [exerciseData, setExerciseData] = useState({
         name: '',
         description: '',
-        photo: null,
+        photo: null
     });
 
     const handleChange = (e) => {
         const { name, value, files } = e.target;
-        const newValue = name === 'photo' ? (files.length > 0 ? files[0] : null) : value;
+        const photo = name === 'photo' ? (files.length > 0 ? files[0] : null) : value;
         setExerciseData(prevState => ({
             ...prevState,
-            [name]: newValue
+            [name]: photo
         }));
     };
 
@@ -32,7 +32,12 @@ export const CreateExercise = ({show, handleClose}) => {
 
         instance.post('exercise/', formData).then((resp) => {
             console.log('Упражнение успешно добавлено:', resp.data);
-            window.location.reload();
+            setExerciseData({
+                name: '',
+                description: '',
+                photo: null
+            });
+            changeExercise();
         }).catch((err) => {
             console.log(err.response?.data);
         });

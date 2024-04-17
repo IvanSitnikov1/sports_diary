@@ -30,7 +30,7 @@ export const ExercisePage = () => {
                 <h3 className="col-4">Упражнения</h3>
                 <Button variant="warning" onClick={handleShow}>Добавить</Button>
             </div>
-            {exercises.map((exercise) => (
+            {exercises.slice().reverse().map((exercise) => (
                 <Exercise exercise={exercise} changeExercise={getExercises} />
             ))}
             <CreateExercise show={show} handleClose={handleClose} changeExercise={getExercises} />

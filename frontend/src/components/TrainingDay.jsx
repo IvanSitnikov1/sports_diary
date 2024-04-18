@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 
 import {instance} from '../api/axios.api';
 
-export const TrainingDay = () => {
+export const TrainingDay = ({numDay}) => {
     const [exercises, setExercises] = useState([])
     const [countExercises, setCountExercises] = useState(1)
 
@@ -28,7 +28,7 @@ export const TrainingDay = () => {
         <>
             <Card style={{maxWidth: "400px", backgroundColor: "#afd3a9a6"}}>
                 <Card.Body>
-                    <Card.Title className="text-center">Day 1</Card.Title>
+                    <Card.Title className="text-center">Day {numDay}</Card.Title>
                     <Card.Text>
                         <Form>
                              <div className="d-flex">

@@ -1,17 +1,19 @@
-import {Navbar, Nav, Form, Container, Button, Row, Col} from 'react-bootstrap';
+import {Navbar, Nav, Container} from 'react-bootstrap';
 import logo from '../logo192.png';
-import { Outlet } from "react-router-dom";
+import { Outlet, useNavigate, useLocation } from "react-router-dom";
 import { useDispatch, useSelector } from 'react-redux';
-import {useNavigate} from 'react-router-dom';
 
 import {removeTokenFromLocalStorage} from '../helpers/localstorage.helper';
 import {logout} from '../store/user/userSlice';
 import {selectIsAuth} from '../store/selectors';
 
 export const Header = () => {
-    const isAuth = useSelector(selectIsAuth)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const isAuth = useSelector(selectIsAuth);
+    const dispatch = useDispatch();
+    const navigate = useNavigate();
+    const location = useLocation();
+
+    const path = location.pathname;
 
     const logoutHandler = () => {
         dispatch(logout())
@@ -35,13 +37,17 @@ export const Header = () => {
                     <Navbar.Toggle aria-controls="responsive-navbar-nav" />
                     <Navbar.Collapse id="responsive-navbar-nav" className="justify-content-between">
                         <Nav className="mr-auto">
-                            <Nav.Link href="/">Дневник</Nav.Link>
-                            <Nav.Link href="programs">Программы тренировок</Nav.Link>
-                            <Nav.Link href="exercises">Упражнения</Nav.Link>
-                            <Nav.Link href="/about">О нас</Nav.Link>
-                            <Nav.Link href="/contacts">Контакты</Nav.Link>
+                            <Nav.Link href="/" className={path === "/" ? "active" : ""}>Дневник</Nav.Link>
+                            <Nav.Link href="/programs" className={path === "/programs" ? "active" : ""}>Программы тренировок</Nav.Link>
+                            <Nav.Link href="/exercises" className={path === "/exercises" ? "active" : ""}>Упражнения</Nav.Link>
+                            <Nav.Link href="/about" className={path === "/about" ? "active" : ""}>О нас</Nav.Link>
+                            <Nav.Link href="/contacts" className={path === "/contacts" ? "active" : ""}>Контакты</Nav.Link>
                         </Nav>
-                        <Nav.Link href="/auth" onClick={logoutHandler}>Log out</Nav.Link>
+                        {isAuth ?
+                            <Nav.Link href="/auth" onClick={logoutHandler}>Log out</Nav.Link>
+                        : <></>
+                        }
+
                     </Navbar.Collapse>
                 </Container>
             </Navbar>

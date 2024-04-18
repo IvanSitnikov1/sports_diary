@@ -1,5 +1,7 @@
 import {Button, Card} from 'react-bootstrap';
 
+import {CreateProgramPage} from './CreateProgramPage';
+
 export const ProgramPage = () => {
     return (
         <>
@@ -12,14 +14,15 @@ export const ProgramPage = () => {
                 style={{minWidth: "500px", backgroundColor: "#afd3a9a6"}}
             >
                 <Card.Body>
-                <Card.Title>Название программы</Card.Title>
-                <Card.Text>
-                    Описание программы...Описание программы...Описание программы...
-                    Описание программы...Описание программы...
-                </Card.Text>
-                <Card.Link href="#">Подробнее</Card.Link>
+                    <Card.Title>Название программы</Card.Title>
+                    <Card.Text>
+                        Описание программы...Описание программы...Описание программы...
+                        Описание программы...Описание программы...
+                    </Card.Text>
+                    <Card.Link href="#">Подробнее</Card.Link>
                 </Card.Body>
             </Card>
+            <CreateProgramPage />
         </>
     )
 }

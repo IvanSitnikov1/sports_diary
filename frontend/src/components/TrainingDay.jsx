@@ -3,21 +3,22 @@ import { useState, useEffect } from 'react';
 
 import {instance} from '../api/axios.api';
 
-export const TrainingDay = ({numDay}) => {
+export const TrainingDay = ({numDay, updateTrainingDays, trainingDays}) => {
     const [exercises, setExercises] = useState([])
     const [countExercises, setCountExercises] = useState(1)
-    const [exerciseValues, setExerciseValues] = useState([]);
+    const [exerciseValues, setExerciseValues] = useState({});
+    const [exerciseIds, setExerciseIds] = useState({});
 
-    const addExerciseValue = (exerciseId, value) => {
-        const newExerciseValues = [...exerciseValues];
-        newExerciseValues.push({ exerciseId, value });
-        setExerciseValues(newExerciseValues);
+    const updateExerciseIds = (index, exerciseId) => {
+        const newExerciseIds = {...exerciseIds};
+        newExerciseIds[index] = exerciseId;
+        setExerciseIds(newExerciseIds);
     };
 
-    const updateExerciseValue = (index, value) => {
-        const updatedExerciseValues = [...exerciseValues];
-        updatedExerciseValues[index].value = value;
-        setExerciseValues(updatedExerciseValues);
+    const updateExerciseValues = (index, value) => {
+        const newExerciseValues = {...exerciseValues};
+        newExerciseValues[index] = value;
+        setExerciseValues(newExerciseValues);
     };
 
     const addCount = () => {setCountExercises(countExercises + 1)}
@@ -35,7 +36,13 @@ export const TrainingDay = ({numDay}) => {
 
     useEffect(() => {
         getExercises();
-    }, [])
+        const mergedArray = Object.keys(exerciseIds).map(key => ({
+            id: parseInt(exerciseIds[key]),
+            value: exerciseValues[key]
+        }));
+        updateTrainingDays(numDay, mergedArray)
+        console.log(trainingDays);
+    }, [exerciseIds, exerciseValues])
 
     return (
         <>
@@ -44,29 +51,34 @@ export const TrainingDay = ({numDay}) => {
                     <Card.Title className="text-center">Day {numDay}</Card.Title>
                     <Card.Text>
                         <Form>
-                             <div className="d-flex">
-                                 <Form.Group className="m-1 text-center col-6">
-                                     <Form.Label>Упражнение</Form.Label>
-                                     {selectArray.map((item, index) => (
-                                         <div key={index}>
-                                             <Form.Select className="m-1" onChange={(e) => addExerciseValue(e.target.value, '')}>
-                                                 <option>Select exercise</option>
-                                                 {exercises.map((exercise) => (
-                                                     <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
-                                                 ))}
-                                             </Form.Select>
-                                         </div>
-                                     ))}
-                                 </Form.Group>
-                                 <Form.Group className="m-1  text-center">
-                                     <Form.Label>Вес/подх.*повт.</Form.Label>
-                                     {selectArray.map((item, index) => (
-                                         <div key={index}>
-                                             <Form.Control type="text" className="m-1" value={exerciseValues[index] ? exerciseValues[index].value : ''} onChange={(e) => updateExerciseValue(index, e.target.value)} />
-                                         </div>
-                                     ))}
-                                 </Form.Group>
-                             </div>
+                            <div className="d-flex">
+                                <Form.Group className="m-1 text-center col-6">
+                                    <Form.Label>Упражнение</Form.Label>
+                                    {selectArray.map((item, index) => (
+                                        <div key={index}>
+                                            <Form.Select className="m-1" onChange={(e) => updateExerciseIds(index, e.target.value)}>
+                                                <option>Select exercise</option>
+                                                {exercises.map((exercise) => (
+                                                    <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
+                                                ))}
+                                            </Form.Select>
+                                        </div>
+                                    ))}
+                                </Form.Group>
+                                <Form.Group className="m-1  text-center">
+                                    <Form.Label>Вес/подх.*повт.</Form.Label>
+                                    {selectArray.map((item, index) => (
+                                        <div key={index}>
+                                            <Form.Control
+                                                type="text"
+                                                className="m-1"
+                                                value={exerciseValues[index] ? exerciseValues[index] : ''}
+                                                onChange={(e) => updateExerciseValues(index, e.target.value)}
+                                            />
+                                        </div>
+                                    ))}
+                                </Form.Group>
+                            </div>
                         </Form>
                         <Button variant="primary" className="me-2" onClick={addCount}>+</Button>
                         <Button variant="danger" onClick={cancelCount}>-</Button>

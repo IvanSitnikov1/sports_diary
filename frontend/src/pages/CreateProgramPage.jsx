@@ -4,7 +4,14 @@ import { useState } from 'react';
 import {TrainingDay} from '../components/TrainingDay';
 
 export const CreateProgramPage = () => {
-    const [countDays, setCountDays] = useState(1)
+    const [countDays, setCountDays] = useState(1);
+    const [trainingDays, setTrainingDays] = useState({});
+
+    const updateTrainingDays = (index, value) => {
+        const updatedTrainingDays = {...trainingDays};
+        updatedTrainingDays[index] = value;
+        setTrainingDays(updatedTrainingDays);
+    };
 
     const addCount = () => {setCountDays(countDays + 1)}
     const cancelCount = () => {setCountDays(countDays - 1)}
@@ -18,7 +25,7 @@ export const CreateProgramPage = () => {
             <div className="d-flex">
                 {selectArray.map((item, index) => (
                      <div key={index}>
-                         <TrainingDay numDay={index + 1} />
+                         <TrainingDay numDay={index + 1} updateTrainingDays={updateTrainingDays} trainingDays={trainingDays} />
                      </div>
                 ))}
             </div>

@@ -1,4 +1,5 @@
 import {Button, Card} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import {CreateProgramPage} from './CreateProgramPage';
 
@@ -7,7 +8,7 @@ export const ProgramPage = () => {
         <>
             <div className="d-flex align-items-center text-center justify-content-center" style={{minWidth: "600px"}}>
                 <h3 className="col-4">Программы тренировок</h3>
-                <Button variant="warning">Добавить</Button>
+                <Link to="create"><Button variant="warning">Добавить</Button></Link>
             </div>
             <Card
                 className="mt-3"
@@ -22,7 +23,6 @@ export const ProgramPage = () => {
                     <Card.Link href="#">Подробнее</Card.Link>
                 </Card.Body>
             </Card>
-            <CreateProgramPage />
         </>
     )
 }

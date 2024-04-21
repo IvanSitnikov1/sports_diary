@@ -12,6 +12,9 @@ export const CreateProgramPage = () => {
 
     return (
         <>
+            <div className="d-flex align-items-center text-center justify-content-center" style={{minWidth: "600px"}}>
+                <h3 className="col-4">Программа тренировок</h3>
+            </div>
             <div className="d-flex">
                 {selectArray.map((item, index) => (
                      <div key={index}>

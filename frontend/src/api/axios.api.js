@@ -6,5 +6,6 @@ export const instance = axios.create({
     baseURL: 'http://127.0.0.1:8000/api/v1',
     headers: {
         Authorization: getTokenFromLocalStorage() ? `Bearer ${getTokenFromLocalStorage()}` : '',
+        'Content-Type': 'application/json',
     },
 })

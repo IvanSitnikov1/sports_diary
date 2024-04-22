@@ -1,17 +1,39 @@
 import {Form, Button} from 'react-bootstrap';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 import {TrainingDay} from '../components/TrainingDay';
+import {instance} from '../api/axios.api';
 
 export const CreateProgramPage = () => {
+    const navigate = useNavigate ();
     const [countDays, setCountDays] = useState(1);
     const [trainingDays, setTrainingDays] = useState({});
+    const [description, setDescription] = useState('');
+    const [name, setName] = useState('');
 
     const updateTrainingDays = (index, value) => {
         const updatedTrainingDays = {...trainingDays};
         updatedTrainingDays[index] = value;
         setTrainingDays(updatedTrainingDays);
     };
+
+    const handleSaveProgram = () => {
+        const listDays = []
+        for (const day of Object.keys(trainingDays)) {
+            const obj = {};
+            obj['training_exercises'] = trainingDays[day];
+            listDays.push(obj);
+        }
+        const data = JSON.stringify({'description': description, 'name': name, 'training_days': listDays})
+        instance.post('training-program/', data).then((resp) => {
+            console.log('Программа успешно добавлена');
+            navigate('/programs');
+        })
+        .catch((err) => {
+            console.log(err.response?.data)
+        });
+    }
 
     const addCount = () => {setCountDays(countDays + 1)}
     const cancelCount = () => {setCountDays(countDays - 1)}
@@ -38,11 +60,20 @@ export const CreateProgramPage = () => {
                         rows={6}
                         name="description"
                         placeholder="Введите описание тренировочной программы"
-//                         value={exerciseData.description}
-//                         onChange={handleChange}
+                        value={description}
+                        onChange={(e) => {setDescription(e.target.value)}}
                     />
                 </Form.Group>
-                <Button variant="warning" className="mt-2">Сохранить</Button>
+                <Form.Group className="mt-2">
+                    <Form.Control
+                        type="text"
+                        name="name"
+                        placeholder="Введите название тренировочной программы"
+                        value={name}
+                        onChange={(e) => {setName(e.target.value)}}
+                    />
+                </Form.Group>
+                <Button variant="warning" className="mt-2" onClick={handleSaveProgram}>Сохранить</Button>
             </Form>
         </>
     )

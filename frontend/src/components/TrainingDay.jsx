@@ -37,11 +37,10 @@ export const TrainingDay = ({numDay, updateTrainingDays, trainingDays}) => {
     useEffect(() => {
         getExercises();
         const mergedArray = Object.keys(exerciseIds).map(key => ({
-            id: parseInt(exerciseIds[key]),
+            exercise: parseInt(exerciseIds[key]),
             value: exerciseValues[key]
         }));
         updateTrainingDays(numDay, mergedArray)
-        console.log(trainingDays);
     }, [exerciseIds, exerciseValues])
 
     return (

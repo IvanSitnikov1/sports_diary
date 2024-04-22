@@ -37,16 +37,6 @@ class ExerciseViewSet(viewsets.ModelViewSet):
     queryset = Exercise.objects.all()
 
 
-class TrainingExerciseViewSet(viewsets.ModelViewSet):
-    serializer_class = TrainingExerciseSerializer
-    queryset = TrainingExercise.objects.all()
-
-
-class TrainingDayViewSet(viewsets.ModelViewSet):
-    serializer_class = TrainingDaySerializer
-    queryset = TrainingDay.objects.all()
-
-
 class TrainingProgramViewSet(viewsets.ModelViewSet):
     serializer_class = TrainingProgramSerializer
     queryset = TrainingProgram.objects.all()

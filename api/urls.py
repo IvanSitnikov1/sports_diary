@@ -9,8 +9,6 @@ from .views import *
 
 router = DefaultRouter()
 router.register('exercise', ExerciseViewSet, basename='exercise')
-router.register('training-exercise', TrainingExerciseViewSet, basename='training-exercise')
-router.register('training-day', TrainingDayViewSet, basename='training-day')
 router.register('training-program', TrainingProgramViewSet, basename='training-program')
 router.register('users', UserModelViewSet, basename='users')
 

@@ -23,24 +23,22 @@ class ModelRequestMethodsTestCase(TestCase):
             '/api/v1/exercise/',
             data={"name": "deadlift"},
         )
-        response_training_exercise = self.client.post(
-            '/api/v1/training-exercise/',
-            data={"exercise": 1, "value": "100/3*20"},
-        )
-        response_training_day = self.client.post(
-            '/api/v1/training-day/',
-            data={"training_exercises": [1]},
-        )
         response_training_program = self.client.post(
             '/api/v1/training-program/',
-            data={"name": "program 1", "training_days": [1]},
+            data={
+                "name": "program 1",
+                "description": "description",
+                "training_days": [
+                    {
+                        "training_exercises": [
+                            {"exercise": 1, "value": "100/3*20"}
+                        ]
+                    }
+                ]
+            },
+            content_type='application/json',
         )
-
         self.assertEqual(response_exercise.status_code,
-                         status.HTTP_201_CREATED)
-        self.assertEqual(response_training_exercise.status_code,
-                         status.HTTP_201_CREATED)
-        self.assertEqual(response_training_day.status_code,
                          status.HTTP_201_CREATED)
         self.assertEqual(response_training_program.status_code,
                          status.HTTP_201_CREATED)
@@ -48,18 +46,6 @@ class ModelRequestMethodsTestCase(TestCase):
     def test_get(self):
         response_exercise = self.client.get('/api/v1/exercise/')
         response_exercise_by_id = self.client.get('/api/v1/exercise/1/')
-        response_training_exercise = self.client.get(
-            '/api/v1/training-exercise/',
-        )
-        response_training_exercise_by_id = self.client.get(
-            '/api/v1/training-exercise/1/',
-        )
-        response_training_day = self.client.get(
-            '/api/v1/training-day/',
-        )
-        response_training_day_by_id = self.client.get(
-            '/api/v1/training-day/1/',
-        )
         response_training_program = self.client.get(
             '/api/v1/training-program/',
         )
@@ -70,14 +56,6 @@ class ModelRequestMethodsTestCase(TestCase):
         self.assertEqual(response_exercise.status_code,
                          status.HTTP_200_OK)
         self.assertEqual(response_exercise_by_id.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_exercise.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_exercise_by_id.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_day.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_day_by_id.status_code,
                          status.HTTP_200_OK)
         self.assertEqual(response_training_program.status_code,
                          status.HTTP_200_OK)
@@ -90,50 +68,37 @@ class ModelRequestMethodsTestCase(TestCase):
             data={"name": "deadlift_rename"},
             content_type='application/json',
         )
-        response_training_exercise = self.client.put(
-            '/api/v1/training-exercise/1/',
-            data={"exercise": 1, "value": "100/3*20_rename"},
-            content_type='application/json',
-        )
-        response_training_day = self.client.put(
-            '/api/v1/training-day/1/',
-            data={"training_exercises": [1, 1, 1]},
-            content_type='application/json',
-        )
         response_training_program = self.client.put(
             '/api/v1/training-program/1/',
-            data={"name": "program 1_rename", "training_days": [1, 1, 1]},
+            data={
+                "name": "program 1_rename",
+                "descriptions": "descriptions_update",
+                "training_days": [
+                    {
+                        "training_exercises": [
+                            {"exercise": 1, "value": "100/3*20"},
+                            {"exercise": 1, "value": "200/2*10"},
+                        ]
+                    }
+                ]
+            },
             content_type='application/json',
         )
 
         self.assertEqual(response_exercise.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_exercise.status_code,
-                         status.HTTP_200_OK)
-        self.assertEqual(response_training_day.status_code,
                          status.HTTP_200_OK)
         self.assertEqual(response_training_program.status_code,
                          status.HTTP_200_OK)
 
     def test_delete(self):
-        response_training_exercise = self.client.delete(
-            '/api/v1/training-exercise/1/',
+        response_training_program = self.client.delete(
+            '/api/v1/training-program/1/',
         )
         response_exercise = self.client.delete(
             '/api/v1/exercise/1/',
         )
-        response_training_day = self.client.delete(
-            '/api/v1/training-day/1/',
-        )
-        response_training_program = self.client.delete(
-            '/api/v1/training-program/1/',
-        )
 
-        self.assertEqual(response_training_exercise.status_code,
+        self.assertEqual(response_training_program.status_code,
                          status.HTTP_204_NO_CONTENT)
         self.assertEqual(response_exercise.status_code,
-                         status.HTTP_204_NO_CONTENT)
-        self.assertEqual(response_training_day.status_code,
-                         status.HTTP_204_NO_CONTENT)
-        self.assertEqual(response_training_program.status_code,
                          status.HTTP_204_NO_CONTENT)

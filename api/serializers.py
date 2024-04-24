@@ -29,6 +29,7 @@ class ExerciseSerializer(serializers.ModelSerializer):
 
 
 class TrainingExerciseSerializer(serializers.ModelSerializer):
+    exercise_name = serializers.StringRelatedField(source='exercise', read_only=True)
     class Meta:
         model = TrainingExercise
         fields = '__all__'

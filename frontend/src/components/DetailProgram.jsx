@@ -21,27 +21,42 @@ export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
                 onHide={handleClose}
                 centered
             >
-               <Modal.Header closeButton>
-                <Modal.Title>
-                  {program.name}
-                </Modal.Title>
-              </Modal.Header>
-              <Modal.Body>
-                <Container>
-                  <Row>
-                    <Col xs="12" md="6">
-                      Exersises
-                    </Col>
-                    <Col xs="12" md="6">
-                      {program.description}
-                    </Col>
-                  </Row>
-                </Container>
-              </Modal.Body>
+                <Modal.Header closeButton>
+                    <Modal.Title>
+                        {program.name}
+                    </Modal.Title>
+                </Modal.Header>
+                <Modal.Body>
+                    <Container>
+                        <Row>
+                            <Col xs="12" md="5">
+                                <Row>
+                                    <Col><h5>Упражнение</h5></Col>
+                                    <Col><h5>Вес/подх.*повт.</h5></Col>
+                                </Row>
+                                {program.training_days && program.training_days.map((day, index) => (
+                                    <div key={index}>
+                                        <p className="text-center">День {index + 1}</p>
+                                        {day.training_exercises.map((exercise) => (
+                                            <Row>
+                                                <Col><p>{exercise.exercise_name}</p></Col>
+                                                <Col><p>{exercise.value}</p></Col>
+                                            </Row>
+                                        ))}
+                                    </div>
+                                ))}
+                            </Col>
+                            <Col xs="12" md="7">
+                                <h5 className="text-center">Описание программы</h5>
+                                <p className="mx-5">{program.description}</p>
+                            </Col>
+                        </Row>
+                    </Container>
+                </Modal.Body>
               <Modal.Footer>
                 <Button variant="success" onClick={handleClose}>Редактировать</Button>
                 <Button variant="danger" onClick={handleDeleteProgram}>Удалить</Button>
-              </Modal.Footer>
+                </Modal.Footer>
             </Modal>
         </>
     )

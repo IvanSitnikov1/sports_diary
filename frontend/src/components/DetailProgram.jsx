@@ -1,7 +1,17 @@
-import {Modal, Form, Button, Col, Row, Container} from 'react-bootstrap';
+import {Modal, Button, Col, Row, Container} from 'react-bootstrap';
+
+import {instance} from '../api/axios.api';
 
 export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
-
+    const handleDeleteProgram = () => {
+        instance.delete(`training-program/${program.id}/`).then((resp) => {
+            getPrograms();
+            handleClose();
+        })
+        .catch((err) => {
+            console.log(err.response?.data)
+        });
+    }
 
     return (
         <>
@@ -30,7 +40,7 @@ export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
               </Modal.Body>
               <Modal.Footer>
                 <Button variant="success" onClick={handleClose}>Редактировать</Button>
-                <Button variant="danger" onClick={handleClose}>Удалить</Button>
+                <Button variant="danger" onClick={handleDeleteProgram}>Удалить</Button>
               </Modal.Footer>
             </Modal>
         </>

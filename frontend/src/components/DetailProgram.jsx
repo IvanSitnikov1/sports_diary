@@ -1,4 +1,5 @@
 import {Modal, Button, Col, Row, Container} from 'react-bootstrap';
+import { Link } from 'react-router-dom';
 
 import {instance} from '../api/axios.api';
 
@@ -54,7 +55,7 @@ export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
                     </Container>
                 </Modal.Body>
               <Modal.Footer>
-                <Button variant="success" onClick={handleClose}>Редактировать</Button>
+                <Link to={{pathname: '/programs/update', search: `?programId=${program.id}`}}><Button variant="success">Редактировать</Button></Link>
                 <Button variant="danger" onClick={handleDeleteProgram}>Удалить</Button>
                 </Modal.Footer>
             </Modal>

@@ -20,6 +20,7 @@ import {login, logout} from './store/user/userSlice';
 import {getTokenFromLocalStorage} from './helpers/localstorage.helper';
 import {AuthService} from './services/auth.service';
 import {CreateProgramPage} from './pages/CreateProgramPage';
+import {UpdateProgramPage} from './pages/UpdateProgramPage';
 
 function App() {
     const dispatch = useDispatch()
@@ -31,6 +32,7 @@ function App() {
             <Route index element={<DiaryPage />} />
             <Route path="programs" element={<ProgramPage />} />
             <Route path="programs/create" element={<CreateProgramPage />} />
+            <Route path="programs/update" element={<UpdateProgramPage />} />
             <Route path="exercises" element={<ExercisePage />} />
             <Route path="about" element={<AboutPage />} />
             <Route path="contacts" element={<ContactPage />} />

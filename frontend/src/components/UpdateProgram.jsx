@@ -1,18 +1,28 @@
 import {Form, Button} from 'react-bootstrap';
-import { useState } from 'react';
-import { useNavigate } from 'react-router-dom';
+import { useState, useEffect } from 'react';
+import { useNavigate, useLocation } from 'react-router-dom';
 
 import {TrainingDay} from '../components/TrainingDay';
 import {instance} from '../api/axios.api';
 
-export const CreateProgramPage = () => {
-    const navigate = useNavigate ();
-    const [trainingDays, setTrainingDays] = useState([{"training_exercises": [{'exercise': null, 'value': ''}]}]);
-    const [description, setDescription] = useState('');
-    const [name, setName] = useState('');
 
+export const UpdateProgram = ({trainingDays, name, description, setTrainingDays, setName, setDescription, isLoading}) => {
+    const navigate = useNavigate ();
+
+    const updateTrainingDays = (index, value) => {
+        const updatedTrainingDays = {...trainingDays};
+        updatedTrainingDays[index] = value;
+        setTrainingDays(updatedTrainingDays);
+//         console.log(trainingDays)
+    };
     const handleSaveProgram = () => {
-        const data = JSON.stringify({'description': description, 'name': name, 'training_days': trainingDays})
+        const listDays = []
+        for (const day of Object.keys(trainingDays)) {
+            const obj = {};
+            obj['training_exercises'] = trainingDays[day];
+            listDays.push(obj);
+        }
+        const data = JSON.stringify({'description': description, 'name': name, 'training_days': listDays})
         instance.post('training-program/', data).then((resp) => {
             console.log('Программа успешно добавлена');
             navigate('/programs');
@@ -21,27 +31,36 @@ export const CreateProgramPage = () => {
             console.log(err.response?.data)
         });
     }
-
     const addDay = () => {
-        const updatedTrainingDays = [...trainingDays];
-        updatedTrainingDays.push({"training_exercises": [{'exercise': null, 'value': ''}]});
-        setTrainingDays(updatedTrainingDays);
+        const keys = Object.keys(trainingDays);
+        const maxKey = Math.max(...keys.map(Number), 0);
+        const newKey = maxKey + 1;
+        updateTrainingDays(newKey, []);
     }
     const deleteDay = () => {
-        const updatedTrainingDays = [...trainingDays];
-        updatedTrainingDays.pop();
+        const keys = Object.keys(trainingDays);
+        const maxKey = Math.max(...keys.map(Number), 0);
+        const updatedTrainingDays = {...trainingDays};
+        delete updatedTrainingDays[maxKey]
         setTrainingDays(updatedTrainingDays);
     }
+    useEffect(() => {
+        console.log('UpdateProgram', trainingDays)
+    }, []);
 
     return (
         <>
-            <div className="d-flex align-items-center text-center justify-content-center" style={{minWidth: "600px"}}>
+            {isLoading ? (
+                <div>Loading</div>
+            ) : (
+                <div>
+                <div className="d-flex align-items-center text-center justify-content-center" style={{minWidth: "600px"}}>
                 <h3 className="col-4">Программа тренировок</h3>
             </div>
             <div className="d-flex">
-                {trainingDays.map((day, index) => (
-                     <div key={index}>
-                         <TrainingDay numDay={index + 1} trainingDays={trainingDays} setTrainingDays={setTrainingDays} />
+                {Object.entries(trainingDays).map(([key, value]) => (
+                     <div key={key}>
+                         <TrainingDay numDay={key} updateTrainingDays={updateTrainingDays} trainingDays={trainingDays} />
                      </div>
                 ))}
             </div>
@@ -69,6 +88,8 @@ export const CreateProgramPage = () => {
                 </Form.Group>
                 <Button variant="warning" className="mt-2" onClick={handleSaveProgram}>Сохранить</Button>
             </Form>
+            </div>
+            )}
         </>
     )
 }

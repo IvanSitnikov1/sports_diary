@@ -12,13 +12,13 @@ export const CreateProgramPage = () => {
     const [name, setName] = useState('');
 
     const handleSaveProgram = () => {
-        const data = JSON.stringify({'description': description, 'name': name, 'training_days': trainingDays})
+        const data = JSON.stringify({'description': description, 'name': name, 'training_days': trainingDays});
         instance.post('training-program/', data).then((resp) => {
             console.log('Программа успешно добавлена');
             navigate('/programs');
         })
         .catch((err) => {
-            console.log(err.response?.data)
+            console.log(err.response?.data);
         });
     }
 

@@ -74,4 +74,5 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                 exercise = TrainingExercise.objects.create(**exercise_data)
                 day.training_exercises.add(exercise)
             instance.training_days.add(day)
+        instance.save()
         return instance

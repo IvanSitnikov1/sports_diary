@@ -4,7 +4,7 @@ import { useState, useEffect } from 'react';
 import {instance} from '../api/axios.api';
 
 export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
-    const [exercises, setExercises] = useState([])
+    const [exercises, setExercises] = useState([]);
 
     const updateExerciseId = (index, id) => {
         const updatedTrainingDays = [...trainingDays];
@@ -34,7 +34,7 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
             setExercises(resp.data);
         })
         .catch((err) => {
-            console.log(err.response?.data)
+            console.log(err.response?.data);
         });
     };
 
@@ -50,13 +50,12 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
                     <Card.Text>
                         <Form>
                             <div className="d-flex">
-
                                 <Form.Group className="m-1 text-center col-6">
                                     <Form.Label>Упражнение</Form.Label>
                                     {trainingDays[numDay - 1]["training_exercises"].map((exercise, index) => (
                                         <div key={index}>
                                             <Form.Select className="m-1" onChange={(e) => updateExerciseId(index, e.target.value)}>
-                                                <option>Select exercise</option>
+                                                <option>{trainingDays[numDay - 1]["training_exercises"][index]['exercise_name'] || 'Select exercise'}</option>
                                                 {exercises.map((exercise) => (
                                                     <option key={exercise.id} value={exercise.id}>{exercise.name}</option>
                                                 ))}
@@ -64,7 +63,6 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
                                         </div>
                                     ))}
                                 </Form.Group>
-
                                 <Form.Group className="m-1  text-center">
                                     <Form.Label>Вес/подх.*повт.</Form.Label>
                                     {trainingDays[numDay - 1]["training_exercises"].map((exercise, index) => (
@@ -78,7 +76,6 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
                                         </div>
                                     ))}
                                 </Form.Group>
-
                             </div>
                         </Form>
                         <Button variant="primary" className="me-2" onClick={addExercise}>+</Button>

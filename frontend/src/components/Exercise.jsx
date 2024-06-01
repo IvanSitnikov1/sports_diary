@@ -1,5 +1,5 @@
 import {Button, Card} from 'react-bootstrap';
-import React, { useEffect, useState } from 'react';
+import React, { useState } from 'react';
 
 import {instance} from '../api/axios.api';
 import {UpdateExercise} from './UpdateExercise';
@@ -9,14 +9,14 @@ export const Exercise = ({exercise, changeExercise}) => {
 
     const handleClose = () => setShow(false);
     const handleShow = () => setShow(true);
-    const {id, name, photo, photo_url, description} = exercise
-    const imageUrl = photo_url ? photo_url : photo
+    const {id, name, photo, photo_url, description} = exercise;
+    const imageUrl = photo_url ? photo_url : photo;
 
     const handleDelete = () => {
         instance.delete(`exercise/${id}/`).then((resp) => {
             changeExercise();
         });
-    }
+    };
 
     return (
         <Card className="m-3" style={{minWidth: "500px", backgroundColor: "#afd3a9a6"}}>
@@ -46,5 +46,5 @@ export const Exercise = ({exercise, changeExercise}) => {
                 exercise={exercise}
             />
         </Card>
-    )
-}
+    );
+};

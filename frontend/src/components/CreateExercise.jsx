@@ -3,11 +3,12 @@ import {Modal, Form, Button} from 'react-bootstrap';
 
 import {instance} from '../api/axios.api';
 
+
 export const CreateExercise = ({show, handleClose, changeExercise}) => {
     const [exerciseData, setExerciseData] = useState({
         name: '',
         description: '',
-        photo: null
+        photo: null,
     });
 
     const handleChange = (e) => {
@@ -15,7 +16,7 @@ export const CreateExercise = ({show, handleClose, changeExercise}) => {
         const photo = name === 'photo' ? (files.length > 0 ? files[0] : null) : value;
         setExerciseData(prevState => ({
             ...prevState,
-            [name]: photo
+            [name]: photo,
         }));
     };
 
@@ -91,4 +92,4 @@ export const CreateExercise = ({show, handleClose, changeExercise}) => {
             </Modal>
         </>
     );
-}
+};

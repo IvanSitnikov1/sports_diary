@@ -20,18 +20,19 @@ export const CreateProgramPage = () => {
         .catch((err) => {
             console.log(err.response?.data);
         });
-    }
+    };
 
     const addDay = () => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays.push({"training_exercises": [{'exercise': null, 'value': ''}]});
         setTrainingDays(updatedTrainingDays);
-    }
+    };
+
     const deleteDay = () => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays.pop();
         setTrainingDays(updatedTrainingDays);
-    }
+    };
 
     return (
         <>
@@ -70,5 +71,5 @@ export const CreateProgramPage = () => {
                 <Button variant="warning" className="mt-2" onClick={handleSaveProgram}>Сохранить</Button>
             </Form>
         </>
-    )
-}
+    );
+};

@@ -25,17 +25,19 @@ export const UpdateProgramPage = () => {
         .catch((err) => {
             console.log(err.response?.data);
         });
-    }
+    };
+
     const addDay = () => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays.push({"training_exercises": [{'exercise': null, 'value': ''}]});
         setTrainingDays(updatedTrainingDays);
-    }
+    };
+
     const deleteDay = () => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays.pop();
         setTrainingDays(updatedTrainingDays);
-    }
+    };
 
     useEffect(() => {
         if (programId) {
@@ -51,7 +53,7 @@ export const UpdateProgramPage = () => {
                 setIsLoading(false);
             });
         }
-    }, []);
+    }, [programId]);
 
     if (isLoading || Object.keys(trainingDays).length === 0) {
         return <div>Loading...</div>
@@ -100,5 +102,5 @@ export const UpdateProgramPage = () => {
             </div>
             )}
         </>
-    )
-}
+    );
+};

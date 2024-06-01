@@ -6,23 +6,25 @@ import {CreateExercise} from '../components/CreateExercise';
 import {instance} from '../api/axios.api';
 
 export const ExercisePage = () => {
-    const [exercises, setExercises] = useState([])
+    const [exercises, setExercises] = useState([]);
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
+
     const handleShow = () => setShow(true);
+
     const getExercises = () => {
         instance.get('exercise/').then((resp) => {
             setExercises(resp.data);
         })
         .catch((err) => {
-            console.log(err.response?.data)
+            console.log(err.response?.data);
         });
     };
 
     useEffect(() => {
         getExercises();
-    }, [])
+    }, []);
 
     return (
         <>
@@ -35,5 +37,5 @@ export const ExercisePage = () => {
             ))}
             <CreateExercise show={show} handleClose={handleClose} changeExercise={getExercises} />
         </>
-    )
-}
+    );
+};

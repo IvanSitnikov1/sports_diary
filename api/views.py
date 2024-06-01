@@ -1,5 +1,5 @@
 from django.shortcuts import render
-from rest_framework import viewsets, generics
+from rest_framework import viewsets, generics, permissions
 from django.contrib.auth.models import User
 from django.core.exceptions import PermissionDenied
 from rest_framework_simplejwt.exceptions import TokenError
@@ -14,6 +14,13 @@ class UserModelViewSet(viewsets.ModelViewSet):
     queryset = User.objects.all()
     http_method_names = ['post', 'put', 'get']
     serializer_class = UserSerializer
+
+    def get_permissions(self):
+        if self.action == 'create':
+            permission_classes = [permissions.AllowAny]
+        else:
+            permission_classes = [permissions.IsAuthenticated]
+        return [permission() for permission in permission_classes]
 
 
 class ProfileUserView(generics.ListAPIView):

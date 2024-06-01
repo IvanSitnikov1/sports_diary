@@ -11,6 +11,7 @@ export const ProgramPage = () => {
     const [show, setShow] = useState(false);
 
     const handleClose = () => setShow(false);
+
     const handleShow = (obj) => {
         setShow(true);
         setProgram(obj);
@@ -27,7 +28,7 @@ export const ProgramPage = () => {
 
     useEffect(() => {
         getPrograms();
-    }, [])
+    }, []);
 
     return (
         <>
@@ -49,5 +50,5 @@ export const ProgramPage = () => {
             ))}
             <DetailProgram show={show} handleClose={handleClose} getPrograms={getPrograms} program={program} />
         </>
-    )
-}
+    );
+};

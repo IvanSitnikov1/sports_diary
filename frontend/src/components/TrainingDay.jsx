@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 
 import {instance} from '../api/axios.api';
 
+
 export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
     const [exercises, setExercises] = useState([]);
 
@@ -22,12 +23,13 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays[numDay - 1]['training_exercises'].push({'exercise': null, 'value': ''});
         setTrainingDays(updatedTrainingDays);
-    }
+    };
+
     const deleteExercise = () => {
         const updatedTrainingDays = [...trainingDays];
         updatedTrainingDays[numDay - 1]['training_exercises'].pop();
         setTrainingDays(updatedTrainingDays);
-    }
+    };
 
     const getExercises = () => {
         instance.get('exercise/').then((resp) => {
@@ -40,7 +42,7 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
 
     useEffect(() => {
         getExercises();
-    }, [])
+    }, []);
 
     return (
         <>
@@ -84,5 +86,5 @@ export const TrainingDay = ({numDay, trainingDays, setTrainingDays}) => {
                 </Card.Body>
             </Card>
         </>
-    )
-}
+    );
+};

@@ -25,5 +25,5 @@ export const ContactPage = () => {
                 </Form>
             </Container>
         </>
-    )
-}
+    );
+};

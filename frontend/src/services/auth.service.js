@@ -2,15 +2,12 @@ import {instance} from '../api/axios.api';
 
 export const AuthService = {
     async registration(userData) {
-        const {data} = await instance.post('users/', userData)
-        return data
+        const response = await instance.post('users/', userData);
     },
     async login(userData) {
-        const {data} = await instance.post('auth/token/', userData)
-        return data
-    },
-    async getProfile() {
-        const {data} = await instance.get('auth/profile/')
-        return data
+        const response = await instance.post('auth/token/', userData);
+        localStorage.setItem("access", JSON.stringify(response.data.access));
+        localStorage.setItem("refresh", JSON.stringify(response.data.refresh));
+        localStorage.setItem("isAuth", JSON.stringify(true));
     },
 }

@@ -1,53 +1,43 @@
-import {useState} from 'react';
-import { useDispatch } from 'react-redux';
+import {useState, useContext} from 'react';
 import {useNavigate} from 'react-router-dom';
 import {Form, Button, Container} from 'react-bootstrap';
 
-import {AuthService} from '../services/auth.service';
-import {setTokenToLocalStorage} from '../helpers/localstorage.helper';
-import {login} from '../store/user/userSlice';
+import AuthContext from '../contexts/AuthContext';
+
 
 export const Auth = () => {
-    const [email, setEmail] = useState('')
-    const [password, setPassword] = useState('')
-    const [isLogin, setIsLogin] = useState(true)
-    const dispatch = useDispatch()
-    const navigate = useNavigate()
+    const [email, setEmail] = useState('');
+    const [password, setPassword] = useState('');
+    const [isLogin, setIsLogin] = useState(true);
+    const navigate = useNavigate();
+    const {login, registration} = useContext(AuthContext);
 
     const loginHandler = async (e) => {
         try {
-            e.preventDefault()
-            const data = await AuthService.login({
+            e.preventDefault();
+            await login({
                 username: email,
                 password: password,
-            })
-            if (data) {
-                setTokenToLocalStorage('token', data.access)
-                dispatch(login({
-                    username: email,
-                    password: password,
-                 }))
-                navigate('/')
-            }
+            });
+            navigate('/');
         } catch (err) {
-            console.log(err.response?.data)
+            console.log(err.response?.data.message);
         }
-    }
+    };
 
     const registrationHandler = async (e) => {
         try {
-            e.preventDefault()
-            const data = await AuthService.registration({
+            e.preventDefault();
+            await registration({
                 username: email,
                 password: password,
-            })
-            if(data) {
-                setIsLogin(!isLogin)
-            }
+            });
+            setIsLogin(true);
+            navigate('/auth');
         } catch (err) {
-            const error = err.response?.data.message
+            console.log(err.response?.data.message);
         }
-    }
+    };
 
     return (
         <div className="d-flex justify-content-center align-items-center" style={{ height: '100vh' }}>
@@ -91,5 +81,5 @@ export const Auth = () => {
                 </div>
             </Container>
         </div>
-    )
-}
+    );
+};

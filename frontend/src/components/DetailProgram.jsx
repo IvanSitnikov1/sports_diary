@@ -3,6 +3,7 @@ import { Link } from 'react-router-dom';
 
 import {instance} from '../api/axios.api';
 
+
 export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
     const handleDeleteProgram = () => {
         instance.delete(`training-program/${program.id}/`).then((resp) => {
@@ -12,7 +13,7 @@ export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
         .catch((err) => {
             console.log(err.response?.data)
         });
-    }
+    };
 
     return (
         <>
@@ -60,5 +61,5 @@ export const DetailProgram = ({show, handleClose, getPrograms, program}) => {
                 </Modal.Footer>
             </Modal>
         </>
-    )
-}
+    );
+};

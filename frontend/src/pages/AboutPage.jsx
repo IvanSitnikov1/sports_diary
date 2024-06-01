@@ -60,5 +60,5 @@ export const AboutPage = () => {
                 </Tab.Container>
             </Container>
         </>
-    )
-}
+    );
+};

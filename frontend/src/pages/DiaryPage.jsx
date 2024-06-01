@@ -1,3 +1,6 @@
+
+
+
 export const DiaryPage = () => {
     return (
         <>
@@ -5,5 +8,5 @@ export const DiaryPage = () => {
             <h1>Дневник...</h1>
             </div>
         </>
-    )
-}
+    );
+};

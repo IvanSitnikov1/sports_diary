@@ -1,8 +1,10 @@
 from django.db import models
+from django.contrib.auth.models import User
 
 
 class Exercise(models.Model):
     """Модель упражнения"""
+
     name = models.CharField(max_length=50)
     photo = models.ImageField(
         upload_to='photo_exercises/%Y/%m/%d/',
@@ -10,13 +12,21 @@ class Exercise(models.Model):
     )
     photo_url = models.URLField(blank=True, null=True)
     description = models.TextField()
+    author = models.ForeignKey(User, on_delete=models.SET_NULL, null=True)
 
     def __str__(self):
         return self.name
 
 
+class ExercisePublic(Exercise):
+    """Модель упражнения для публичного доступа"""
+
+    pass
+
+
 class TrainingExercise(models.Model):
     """Модель содержит упражнение и норму его выполнения"""
+
     exercise = models.ForeignKey(Exercise, on_delete=models.CASCADE)
     value = models.CharField(max_length=30)
 
@@ -25,6 +35,7 @@ class TrainingExercise(models.Model):
 
 class TrainingDay(models.Model):
     """Модель тренировочного дня"""
+
     training_exercises = models.ManyToManyField(TrainingExercise)
 
     def __str__(self):
@@ -33,6 +44,7 @@ class TrainingDay(models.Model):
 
 class TrainingProgram(models.Model):
     """Модель программы тренировки"""
+
     name = models.CharField(max_length=50)
     description = models.TextField()
     training_days = models.ManyToManyField(TrainingDay)

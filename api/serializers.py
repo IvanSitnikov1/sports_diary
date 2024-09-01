@@ -1,17 +1,19 @@
 from rest_framework import serializers
 from django.contrib.auth.models import User
 
-from .models import *
+from .models import Exercise, TrainingExercise, TrainingDay, TrainingProgram
 
 
 class UserSerializer(serializers.ModelSerializer):
+    """Сериализатор модели пользователя"""
+
     password = serializers.CharField(write_only=True)
+
     class Meta:
         model = User
         fields = ['id', 'username', 'password']
 
     def create(self, validated_data):
-        """Создание пользователя"""
         user = User.objects.create(
             username=validated_data['username'],
         )
@@ -21,15 +23,25 @@ class UserSerializer(serializers.ModelSerializer):
 
 
 class ExerciseSerializer(serializers.ModelSerializer):
+    """Сериализатор модели упражнения"""
+
     photo = serializers.ImageField(required=False)
     description = serializers.CharField(required=False)
+
     class Meta:
         model = Exercise
         fields = '__all__'
 
+    def create(self, validated_data):
+        validated_data['author'] = self.context['request'].user
+        return super().create(validated_data)
+
 
 class TrainingExerciseSerializer(serializers.ModelSerializer):
-    exercise_name = serializers.StringRelatedField(source='exercise', read_only=True)
+    exercise_name = serializers.StringRelatedField(
+        source='exercise',
+        read_only=True)
+
     class Meta:
         model = TrainingExercise
         fields = '__all__'
@@ -37,6 +49,7 @@ class TrainingExerciseSerializer(serializers.ModelSerializer):
 
 class TrainingDaySerializer(serializers.ModelSerializer):
     training_exercises = TrainingExerciseSerializer(many=True)
+
     class Meta:
         model = TrainingDay
         fields = '__all__'
@@ -45,6 +58,7 @@ class TrainingDaySerializer(serializers.ModelSerializer):
 class TrainingProgramSerializer(serializers.ModelSerializer):
     description = serializers.CharField(required=False)
     training_days = TrainingDaySerializer(many=True)
+
     class Meta:
         model = TrainingProgram
         fields = '__all__'
@@ -59,6 +73,7 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                 exercise = TrainingExercise.objects.create(**exercise_data)
                 day.training_exercises.add(exercise)
             program.training_days.add(day)
+
         return program
 
     def update(self, instance, validated_data):
@@ -75,4 +90,5 @@ class TrainingProgramSerializer(serializers.ModelSerializer):
                 day.training_exercises.add(exercise)
             instance.training_days.add(day)
         instance.save()
+
         return instance

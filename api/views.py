@@ -1,16 +1,16 @@
-from django.shortcuts import render
+from rest_framework.decorators import action
 from rest_framework import viewsets, generics, permissions
 from django.contrib.auth.models import User
-from django.core.exceptions import PermissionDenied
-from rest_framework_simplejwt.exceptions import TokenError
-from rest_framework_simplejwt.tokens import AccessToken
+from rest_framework.response import Response
 
-from .models import *
-from .serializers import *
+from .models import Exercise, ExercisePublic, TrainingProgram
+from .serializers import UserSerializer, ExerciseSerializer, \
+    TrainingProgramSerializer
 
 
 class UserModelViewSet(viewsets.ModelViewSet):
     """Создаются точки создания, получения и изменения пользователя"""
+
     queryset = User.objects.all()
     http_method_names = ['post', 'put', 'get']
     serializer_class = UserSerializer
@@ -23,25 +23,63 @@ class UserModelViewSet(viewsets.ModelViewSet):
         return [permission() for permission in permission_classes]
 
 
-class ProfileUserView(generics.ListAPIView):
-    """Получение модели пользователя по токену"""
+class ProfileUserView(generics.GenericAPIView):
+    """Получение данных аутентифицированного пользователя"""
 
     serializer_class = UserSerializer
 
-    def get_queryset(self):
-        token = self.request.headers.get("Authorization").split(" ")[1]
-        try:
-            decoded_token = AccessToken(token)
-        except TokenError:
-            raise PermissionDenied("Invalid token")
+    def get(self, request, *args, **kwargs):
+        user = request.user
+        serializer = self.get_serializer(user)
 
-        queryset = User.objects.filter(pk=int(decoded_token["user_id"]))
-        return queryset
+        return Response(serializer.data)
 
 
 class ExerciseViewSet(viewsets.ModelViewSet):
+    """CRUD операции с упражнениями пользователя-автора"""
+
     serializer_class = ExerciseSerializer
-    queryset = Exercise.objects.all()
+
+    def get_queryset(self):
+        return Exercise.objects.filter(author=self.request.user)
+
+    # добавление упражнения в список публичных
+    @action(detail=True)
+    def in_public(self, request, pk):
+        exercise = Exercise.objects.get(pk=pk)
+        exercise_public = ExercisePublic.objects.create(
+            name=exercise.name,
+            photo=exercise.photo,
+            photo_url=exercise.photo_url,
+            description=exercise.description,
+            author=exercise.author,
+        )
+        exercise_public.save()
+
+        return Response({'message': 'Exercise added to public.'}, 201)
+
+
+class ExercisePublicListView(generics.ListAPIView):
+    """Получение списка публичных упражнений"""
+
+    queryset = ExercisePublic.objects.all()
+    serializer_class = ExerciseSerializer
+
+
+class ExercisePublicView(generics.RetrieveAPIView):
+    """Получение публичного упражнения по id"""
+
+    queryset = ExercisePublic.objects.all()
+    serializer_class = ExerciseSerializer
+
+
+class ExercisePublicDeleteView(generics.DestroyAPIView):
+    """Удаление публичного упражнения, при условии, что пользователь - автор"""
+
+    serializer_class = ExerciseSerializer
+
+    def get_queryset(self):
+        return Exercise.objects.filter(author=self.request.user)
 
 
 class TrainingProgramViewSet(viewsets.ModelViewSet):
